@@ -1,0 +1,18 @@
+{
+  "presentations": [
+    {
+      "slug": "bubble-tea-tuis",
+      "title": "Building Terminal User Interfaces in Go",
+      "description": "How to build interactive terminal UIs in Go using Bubble Tea.",
+      "date": "2026-03-16",
+      "tags": ["go", "tui", "bubble-tea"]
+    },
+    {
+      "slug": "saas-stack-in-go",
+      "title": "Building a SaaS Stack in Go",
+      "description": "How to build a scalable JSON API in Go.",
+      "date": "2026-03-16",
+      "tags": ["go", "saas", "architecture"]
+    }
+  ]
+}
