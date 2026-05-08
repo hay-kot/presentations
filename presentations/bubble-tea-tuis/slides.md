@@ -18,6 +18,7 @@ transition: slide-left
 # enable MDC Syntax: https://sli.dev/features/mdc
 mdc: true
 overviewSnapshots: true
+routerMode: hash
 dragPos:
   haykot-logo: 17,476,61,62
 ---
