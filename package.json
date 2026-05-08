@@ -1,0 +1,16 @@
+{
+  "name": "presentations",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "pnpm -r --parallel run build && node site/build.mjs",
+    "build:site": "node site/build.mjs",
+    "clean": "rm -rf dist && pnpm -r exec rm -rf dist .slidev",
+    "test": "node --test site/build.test.mjs"
+  },
+  "packageManager": "pnpm@9.12.0",
+  "engines": {
+    "node": ">=20"
+  }
+}
