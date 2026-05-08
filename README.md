@@ -1,7 +1,9 @@
 # presentations
 
+**Live site:** <https://hay-kot.github.io/presentations/>
+
 Monorepo of [Slidev](https://sli.dev) presentations, deployed as a single
-GitHub Pages site at <https://hay-kot.github.io/presentations/>.
+GitHub Pages site.
 
 ## Layout
 

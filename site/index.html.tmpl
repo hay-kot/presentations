@@ -79,6 +79,13 @@
       font-size: 0.8rem;
       color: var(--muted);
     }
+    footer a {
+      color: var(--muted);
+      text-decoration: underline;
+    }
+    footer a:hover {
+      color: var(--accent);
+    }
   </style>
 </head>
 <body>
@@ -87,7 +94,10 @@
     <ul class="presentations">
       {{PRESENTATIONS}}
     </ul>
-    <footer>Generated {{GENERATED_AT}}</footer>
+    <footer>
+      <a href="https://github.com/hay-kot/presentations">Source on GitHub</a>
+      &middot; Generated {{GENERATED_AT}}
+    </footer>
   </main>
 </body>
 </html>
