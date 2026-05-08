@@ -1,0 +1,118 @@
+name: Deploy presentations
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.matrix.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - id: matrix
+        run: |
+          slugs=$(jq -c '[.presentations[].slug]' site/presentations.json)
+          echo "matrix=$slugs" >> "$GITHUB_OUTPUT"
+
+  build-presentations:
+    runs-on: ubuntu-latest
+    needs: setup
+    strategy:
+      fail-fast: false
+      matrix:
+        slug: ${{ fromJSON(needs.setup.outputs.matrix) }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      - name: Build ${{ matrix.slug }}
+        run: pnpm --filter ${{ matrix.slug }} run build
+
+      - name: Verify build is non-empty
+        run: test -s presentations/${{ matrix.slug }}/dist/index.html
+
+      - name: Upload per-presentation dist
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist-${{ matrix.slug }}
+          path: presentations/${{ matrix.slug }}/dist
+          if-no-files-found: error
+          retention-days: 1
+
+  build-site:
+    runs-on: ubuntu-latest
+    needs: build-presentations
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Download all per-presentation dists
+        uses: actions/download-artifact@v4
+        with:
+          pattern: dist-*
+          path: artifacts
+
+      - name: Stage artifacts under presentations/<slug>/dist
+        run: |
+          set -euo pipefail
+          for dir in artifacts/dist-*; do
+            slug="${dir#artifacts/dist-}"
+            mkdir -p "presentations/$slug"
+            mv "$dir" "presentations/$slug/dist"
+          done
+          rmdir artifacts
+
+      - name: Set deterministic timestamp
+        run: |
+          echo "SOURCE_DATE_EPOCH=$(git log -1 --format=%cI HEAD)" >> "$GITHUB_ENV"
+
+      - name: Build landing page
+        run: node site/build.mjs
+
+      - name: Verify landing page is non-empty
+        run: test -s dist/index.html
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build-site
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
