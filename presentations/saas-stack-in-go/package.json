@@ -1,0 +1,16 @@
+{
+  "name": "saas-stack-in-go",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "build": "slidev build --base /presentations/saas-stack-in-go/",
+    "dev": "slidev --open",
+    "export": "slidev export"
+  },
+  "dependencies": {
+    "@slidev/cli": "^0.49.27",
+    "@slidev/theme-default": "latest",
+    "@slidev/theme-seriph": "latest",
+    "vue": "^3.4.33"
+  }
+}
