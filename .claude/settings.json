@@ -1,0 +1,13 @@
+{
+  "extraKnownMarketplaces": {
+    "slidev-plugins": {
+      "source": {
+        "source": "github",
+        "repo": "slidevjs/slidev"
+      }
+    }
+  },
+  "enabledPlugins": {
+    "slidev@slidev-plugins": true
+  }
+}
