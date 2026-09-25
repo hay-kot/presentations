@@ -14,5 +14,12 @@
       "date": "2026-03-16",
       "tags": ["go", "saas", "architecture"]
     }
+    ,{
+      "slug": "building-grafana-with-ai",
+      "title": "Building Grafana with AI: What Actually Works",
+      "description": "A field report on building production Go software with AI — what worked, what didn't, and the tooling we built along the way.",
+      "date": "2026-05-21",
+      "tags": ["go", "ai", "grafana", "tooling"]
+    }
   ]
 }
